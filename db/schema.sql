@@ -15,15 +15,17 @@ CREATE TABLE users (
 );
 
 CREATE TABLE category (
-    cat_id INT,
+    cat_id SERIAL PRIMARY KEY,
     color VARCHAR
 );
 
 
 CREATE TABLE goal (
-    goal_id INT, 
-    user_id INT, 
-    cat_id INT, 
+    goal_id SERIAL PRIMARY KEY, 
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id), 
+    cat_id INT,
+    FOREIGN KEY (cat_id) REFERENCES category(cat_id), 
     title VARCHAR,
     description VARCHAR,
     specific VARCHAR,
@@ -34,9 +36,11 @@ CREATE TABLE goal (
 );
 
 CREATE TABLE task (
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    task_id INT,
-    goal_id INT, 
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    task_id SERIAL PRIMARY KEY,
+    goal_id INT,
+    FOREIGN KEY (goal_id) REFERENCES goal(goal_id), 
     title VARCHAR,
     description VARCHAR
 );
