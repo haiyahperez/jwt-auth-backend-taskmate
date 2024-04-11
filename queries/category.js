@@ -7,7 +7,7 @@ const getAllCategories = async () => {
         )
         return allCategories
     } catch (error) {
-        console.error("Error fetching request:", error);
+        console.error("Error fetching request", error);
     }
 };
 
