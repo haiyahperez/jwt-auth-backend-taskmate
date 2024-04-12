@@ -19,13 +19,17 @@ CREATE TABLE category (
     color VARCHAR
 );
 
+CREATE TABLE task (
+    task_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(user_id),
+    cat_id INT REFERENCES category(cat_id), 
+    title VARCHAR,
+    description VARCHAR
+);
 
-CREATE TABLE goal (
-    goal_id SERIAL PRIMARY KEY, 
-    user_id INT,
-    FOREIGN KEY (user_id) REFERENCES users(user_id), 
-    cat_id INT,
-    FOREIGN KEY (cat_id) REFERENCES category(cat_id), 
+CREATE TABLE goalform ( 
+    user_id INT REFERENCES users(user_id),
+    task_id INT REFERENCES task(task_id),  
     title VARCHAR,
     description VARCHAR,
     specific VARCHAR,
@@ -34,15 +38,3 @@ CREATE TABLE goal (
     relevant VARCHAR,
     timely VARCHAR
 );
-
-CREATE TABLE task (
-    user_id INT,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    task_id SERIAL PRIMARY KEY,
-    goal_id INT,
-    FOREIGN KEY (goal_id) REFERENCES goal(goal_id), 
-    title VARCHAR,
-    description VARCHAR
-);
-
-

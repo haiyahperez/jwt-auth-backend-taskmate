@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 
 const authController = require("./controllers/authController");
 const categoryController = require("./controllers/categoryController");
+const taskController = require("./controllers/taskController");
 
 // CONFIGURATION
 const app = express();
@@ -30,11 +31,14 @@ app.use(cookieParser());
 
 app.use("/api/auth", authController);
 app.use("/category", categoryController);
+app.use("/category", taskController);
+
 
 // ROUTES
 app.get("/", (_req, res) => {
   res.send("Welcome to JWT Auth!");
 });
+
 
 
 // 404 PAGE
