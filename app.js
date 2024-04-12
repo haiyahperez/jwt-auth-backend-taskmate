@@ -32,8 +32,8 @@ app.use(cookieParser());
 
 app.use("/api/auth", authController);
 app.use("/category", categoryController);
-app.use("/category", taskController);
-app.use("/category", goalController);
+app.use("/task", taskController);
+app.use("/goal", goalController);
 
 
 // ROUTES

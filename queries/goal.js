@@ -1,10 +1,10 @@
 const db = require("../db/dbConfig");
 
-const getGoals = async (user_id) => {
+const getGoals = async (task_id) => {
     try {
         const userGoals = await db.any(
-            "SELECT * FROM goal WHERE user_id = $1",
-            [user_id]
+            "SELECT * FROM goalform WHERE task_id = $1",
+            [task_id]
         );
         return userGoals;
     } catch (error) {
@@ -16,7 +16,7 @@ const getGoals = async (user_id) => {
 const createGoal = async (user_id, task_id, cat_id, title, description, specific, measure, attain, realistic, timely) => {
     try {
         const newGoal = await db.one(
-            "INSERT INTO goal (user_id, task_id, cat_id, title, description, specific, measure, attain, realistic, timely) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+            "INSERT INTO goalform (user_id, task_id, cat_id, title, description, specific, measure, attain, realistic, timely) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
             [user_id, task_id, cat_id, title, description, specific, measure, attain, realistic, timely]
         );
         return newGoal;
@@ -29,7 +29,7 @@ const createGoal = async (user_id, task_id, cat_id, title, description, specific
 const updateGoal = async (goal_id, user_id, task_id, cat_id, title, description, specific, measure, attain, realistic, timely) => {
     try {
         const updatedGoal = await db.one(
-            "UPDATE goal SET user_id = $2, task_id = $3, cat_id = $4, title = $5, description = $6, specific = $7, measure = $8, attain = $9, realistic = $10, timely = $11 WHERE goal_id = $1 RETURNING *",
+            "UPDATE goalform SET user_id = $2, task_id = $3, cat_id = $4, title = $5, description = $6, specific = $7, measure = $8, attain = $9, realistic = $10, timely = $11 WHERE goal_id = $1 RETURNING *",
             [goal_id, user_id, task_id, cat_id, title, description, specific, measure, attain, realistic, timely]
         );
         return updatedGoal;
@@ -42,7 +42,7 @@ const updateGoal = async (goal_id, user_id, task_id, cat_id, title, description,
 const deleteGoal = async (goal_id) => {
     try {
         await db.none(
-            "DELETE FROM goal WHERE goal_id = $1",
+            "DELETE FROM goalform WHERE goal_id = $1",
             [goal_id]
         );
     } catch (error) {

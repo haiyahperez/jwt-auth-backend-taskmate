@@ -7,11 +7,11 @@ const {
     deleteGoal
 } = require("../queries/goal");
 
-// GET to retrieve user goals
-goal.get("/goal", async (req, res) => {
+// GET to see user goals by id
+goal.get("/:task_id", async (req, res) => {
+    const { task_id } = req.params;
     try {
-        const { user_id } = req.params;
-        const goals = await getGoals(user_id);
+        const goals = await getGoals(task_id);
         res.status(200).json(goals);
     } catch (error) {
         console.error("Error fetching goals:", error);
@@ -19,9 +19,10 @@ goal.get("/goal", async (req, res) => {
     }
 });
 
-// POST to create a new goal
-goal.post("/goal", async (req, res) => {
-    const { user_id, task_id, cat_id, title, description, specific, measure, attain, realistic, timely } = req.body;
+// POST to create a new goal for task
+goal.post("/:task_id", async (req, res) => {
+    const { task_id } = req.params;
+    const { user_id, cat_id, title, description, specific, measure, attain, realistic, timely } = req.body;
     try {
         const newGoal = await createGoal(user_id, task_id, cat_id, title, description, specific, measure, attain, realistic, timely);
         res.status(201).json(newGoal);
@@ -31,27 +32,26 @@ goal.post("/goal", async (req, res) => {
     }
 });
 
-// PUT to update an existing goal
-goal.put("/goal/:goal_id", async (req, res) => {
-    const { goal_id } = req.params;
-    const { user_id, task_id, cat_id, title, description, specific, measure, attain, realistic, timely } = req.body;
+// PUT to update a goal
+goal.put("/:task_id", async (req, res) => {
+    const { task_id } = req.params;
     try {
-        const updatedGoal = await updateGoal(goal_id, user_id, task_id, cat_id, title, description, specific, measure, attain, realistic, timely);
-        res.status(200).json(updatedGoal);
+        const updatedGoal = await updateGoal(task_id);
+        res.json(updatedGoal);
     } catch (error) {
-        console.error("Error updating goal:", error);
+        console.error("Error updating request:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
 
-// DELETE to delete a goal
-goal.delete("/goal/:goal_id", async (req, res) => {
-    const { goal_id } = req.params;
+// DELETE to delete all goals for each task
+goal.delete("/:task_id", async (req, res) => {
+    const { task_id } = req.params;
     try {
-        await deleteGoal(goal_id);
+        await deleteGoal(task_id);
         res.status(204).end();
     } catch (error) {
-        console.error("Error deleting goal:", error);
+        console.error("Error deleting goals for task:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 });
