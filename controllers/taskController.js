@@ -1,7 +1,7 @@
 const express = require("express");
 const task = express.Router();
 const {
-    getUserTasks,
+    getTasks,
     updateTask,
     createTask,
     deleteTask
@@ -10,7 +10,7 @@ const {
 // GET to retrieve user tasks
 task.get("/task", async (req, res) => {
     try {
-        const tasks = await getUserTasks();
+        const tasks = await getTasks();
         res.status(200).json(tasks);
     } catch (error) {
         console.error("Error fetching tasks:", error);
