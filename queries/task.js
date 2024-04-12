@@ -1,6 +1,6 @@
 const db = require("../db/dbConfig");
 
-const getUserTasks = async (user_id) => {
+const getTasks = async (user_id) => {
     try {
         const userTasks = await db.any(
             "SELECT * FROM task WHERE user_id = $1",
@@ -21,6 +21,18 @@ const getTaskGoals = async () => {
         return taskGoals;
     } catch (error) {
         console.error("Error fetching task goals:", error);
+        throw error;
+    }
+};
+
+const getTaskByCategoryColor = async () => {
+    try {
+        const taskByCategoryColor = await db.any(
+            "SELECT task.*, category.color FROM task JOIN category ON task.cat_id = category.cat_id"
+        );
+        return taskByCategoryColor;
+    } catch (error) {
+        console.error("Error fetching task with category color:", error);
         throw error;
     }
 };
@@ -65,8 +77,9 @@ const deleteTask = async (task_id) => {
 };
 
 module.exports = {
-    getUserTasks,
+    getTasks,
     getTaskGoals,
+    getTaskByCategoryColor,
     updateTask, 
     createTask,
     deleteTask
