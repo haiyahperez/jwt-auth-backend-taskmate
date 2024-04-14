@@ -1,14 +1,25 @@
-const db = require("../db/dbConfig");
+const db = require("../db/dbConfig.js");
 
-const getTasks = async (user_id) => {
+const getTasks = async () => {
     try {
         const userTasks = await db.any(
-            "SELECT * FROM task WHERE user_id = $1",
-            user_id
-        );
+            "SELECT * FROM task"
+            );
         return userTasks;
     } catch (error) {
         console.error("Error fetching user tasks:", error);
+        throw error;
+    }
+};
+
+const getTaskByUser = async (user_id) => {
+    try {
+        const userTasks = await db.any(
+            "SELECT * ALL FROM task WHERE user_id = $1", user_id
+        )
+        return userTasks;
+    } catch (error) {
+        console.error("Error fetching user tasks: ", error);
         throw error;
     }
 };

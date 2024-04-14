@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 const authController = require("./controllers/authController");
 const categoryController = require("./controllers/categoryController");
 const taskController = require("./controllers/taskController");
-const goalController = require("./controllers/goalController")
+const goalController = require("./controllers/goalController");
 
 // CONFIGURATION
 const app = express();

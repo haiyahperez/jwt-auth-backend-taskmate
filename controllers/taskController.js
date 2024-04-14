@@ -2,20 +2,26 @@ const express = require("express");
 const task = express.Router();
 const {
     getTasks,
+    getTaskByUser,
+    getTaskByCategoryColor,
     updateTask,
     createTask,
     deleteTask
 } = require("../queries/task");
 
 // GET to retrieve user tasks
-task.get("/task", async (req, res) => {
-    try {
-        const tasks = await getTasks();
-        res.status(200).json(tasks);
-    } catch (error) {
-        console.error("Error fetching tasks:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
+task.get("/", async (req, res) => {
+    const allTasks = await getTasks();
+       if (allTasks[0]) res.status(200).json(allTasks)
+       else res.status(500).json({ error: "Internal server error" })
+});
+
+// GET tasks by user_id 
+task.get("/:user", async (req, res) => {
+    const { user_id } = req.query;
+    const getAllTasksByUser = await getTaskByUser(user_id);
+    if (getAllTasksByUser[0]) res.status(200).json(getAllTasksByUser)
+    else res.status(500).json({ error: "Internal server error" })
 });
 
 // POST to create a new task
