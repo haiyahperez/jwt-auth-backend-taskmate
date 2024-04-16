@@ -1,56 +1,79 @@
+-- db/seed.sql
 \c jwt_auth
 
-INSERT INTO users (username, password_hash, email)
+INSERT INTO users (user_id, username, password_hash, email)
 VALUES 
-('demo', '$2b$10$.z68x3792U9LyBwmghfsKexstMO7i0SeNCoDmeJa7bEFPQBnZU3bK', 'demo@example.com');
+(1,'demo', '$2b$10$.z68x3792U9LyBwmghfsKexstMO7i0SeNCoDmeJa7bEFPQBnZU3bK', 'demo@example.com'),
+(2, 'demo2', '$2b$10$Zi0ZxJqHXl/6yYD2r6rQyOXIiWcbQ844zNiZ4pVrwYm3ixSIyMl/a', 'demo2@example.com');
 
-INSERT INTO category (color)
+INSERT INTO category (cat_id, color)
 VALUES 
-('Red'),
-('Yellow'),
-('Green');
+(1, 'Red'),
+(2, 'Yellow'),
+(3, 'Green');
 
-INSERT INTO task (task_id, user_id, cat_id, title, description)
+INSERT INTO task (user_id, task_id, cat_id, title, description, specific, measure, attain, relevant, timely)
 VALUES 
-  (1, 1, 1, 'Complete Online HTML/CSS Course', 
-   'Enroll in and complete an online course covering HTML and CSS fundamentals'),
-  (2, 1, 1, 'Build Responsive Website', 
-   'Create a personal portfolio website showcasing projects and skills using HTML, CSS, and JavaScript'),
-  (3, 1, 1, 'Practice JavaScript Daily', 
-   'Spend at least 1 hour every day coding JavaScript projects and solving coding challenges'),
-  (4, 1, 2, 'Update Resume and Cover Letter', 
-   'Review and tailor resume and cover letter to highlight relevant skills and experiences for software engineering roles'),
-  (5, 1, 2, 'Prepare for Technical Interviews', 
-   'Practice solving coding problems and answering technical questions commonly asked in software engineering interviews'),
-  (6, 1, 2, 'Attend Career Fairs and Networking Events', 
-   'Participate in career fairs and networking events to connect with potential employers and industry professionals'),
-  (7, 1, 3, 'Explore GitHub Projects', 
-   'Research and identify beginner-friendly open-source projects on GitHub that align with my interests and skills'),
-  (8, 1, 3, 'Contribute Code and Documentation', 
-   'Select an issue from an open-source project and work on solving it, while documenting the process and code changes'),
-  (9, 1, 3, 'Engage with Project Community', 
-   'Join project discussions, ask questions, and seek feedback from project maintainers and contributors to foster collaboration');
-
-INSERT INTO goalform (user_id, task_id, title, description, specific, measure, attain, relevant, timely)
-VALUES 
-  (1, 1, 'Master HTML, CSS, and JavaScript', 
-   'Achieve proficiency in front-end web development technologies', 
-   'I want to be able to create responsive and visually appealing web pages using HTML, CSS, and JavaScript.', 
-   'I will consider my goal achieved when I can independently build a fully functional website from scratch.', 
-   'Yes, by completing online courses, practicing regularly, and building projects to apply learned concepts.', 
-   'Yes, as front-end development skills are essential for a software engineering career.', 
-   'Yes, I aim to achieve this goal within the next six months.'),
-  (1, 2, 'Secure a Software Engineering Internship', 
-   'Gain practical experience in a professional software development environment', 
-   'I want to obtain a summer internship position at a tech company where I can contribute to real-world projects and learn from experienced developers.', 
-   'I will consider my goal achieved when I receive an offer for a software engineering internship.', 
-   'Yes, by actively applying to internships, networking, and preparing for technical interviews.', 
-   'Yes, gaining hands-on experience will enhance my skills and increase my employability.', 
-   'Yes, I aim to secure an internship before the end of this semester.'),
-  (1, 3, 'Contribute to an Open Source Project', 
-   'Make meaningful contributions to open-source software and collaborate with the global developer community', 
-   'I want to actively contribute code and documentation to an open-source project on GitHub, fostering community engagement and enhancing my programming skills.', 
-   'I will consider my goal achieved when my contributions are merged into the project repository and positively impact its development.', 
-   'Yes, by finding beginner-friendly projects, understanding their codebase, and submitting quality pull requests.', 
-   'Yes, contributing to open-source projects will help me gain practical experience and build a professional network.', 
-   'Yes, I aim to make my first contribution within the next three months.');
+  (1, 1, 1, 'Complete Project Deadline', 
+   'Finish the project before the deadline to ensure timely delivery.',
+   'The project deadline is approaching, and it requires completion to meet client expectations.',
+   'Complete all remaining tasks and deliverables according to the project timeline.',
+   'Yes, by allocating additional resources and working extra hours if necessary.',
+   'Yes, as meeting project deadlines is critical for client satisfaction and business success.',
+   'Yes, the project deadline is within the next week.'),
+  (1, 2, 1, 'Resolve Critical Bug in Production', 
+   'Address and fix the critical bug affecting the production environment immediately.',
+   'A critical bug has been reported by users, causing disruptions to the application.',
+   'Identify the root cause of the bug and implement a solution to resolve it.',
+   'Yes, by prioritizing debugging and testing efforts to identify and fix the bug.',
+   'Yes, as resolving critical issues ensures the stability and reliability of the application.',
+   'Yes, the bug needs to be fixed urgently to minimize impact on users.'),
+  (1, 3, 2, 'Prepare Presentation for Team Meeting', 
+   'Create a comprehensive presentation to update the team on project progress and upcoming tasks.',
+   'A team meeting is scheduled, and a presentation is required to discuss project updates.',
+   'Gather relevant project data and organize it into a clear and concise presentation format.',
+   'Yes, by compiling project data, creating slides, and rehearsing the presentation.',
+   'Yes, as effective communication is essential for team collaboration and alignment.',
+   'Yes, the team meeting is scheduled for later this week.'),
+  (1, 4, 2, 'Review Code Pull Requests', 
+   'Review and provide feedback on code pull requests submitted by team members.',
+   'Several code pull requests have been submitted for review and merging into the main codebase.',
+   'Examine the code changes, identify any issues or improvements, and provide constructive feedback.',
+   'Yes, by thoroughly reviewing the code changes and documenting any comments or suggestions.',
+   'Yes, code reviews help maintain code quality and foster knowledge sharing within the team.',
+   'Yes, code reviews need to be completed before the next sprint planning meeting.'),
+  (1, 5, 3, 'Update Personal Portfolio Website', 
+   'Add recent projects and achievements to the personal portfolio website to showcase skills and experience.',
+   'The personal portfolio website needs to be updated with the latest projects and accomplishments.',
+   'Gather project details, screenshots, and descriptions to showcase on the portfolio website.',
+   'Yes, by updating the website content and ensuring it accurately reflects recent work.',
+   'Yes, as the portfolio website serves as a showcase of skills and expertise to potential employers.',
+   'Yes, the portfolio updates need to be completed by the end of the month.'),
+  (1, 6, 3, 'Research New Software Development Trends', 
+   'Explore and learn about emerging trends and technologies in software development.',
+   'Stay updated with the latest advancements and innovations in the field of software engineering.',
+   'Read articles, watch videos, and attend webinars to gain insights into new software development trends.',
+   'Yes, by dedicating time to research and explore new topics and technologies.',
+   'Yes, staying informed about industry trends helps maintain relevance and competitiveness as a developer.',
+   'Yes, I aim to spend a few hours each week on research and learning activities.'),
+  (2, 7, 1, 'Practice Piano Scales and Arpeggios', 
+   'Devote time to practicing piano scales and arpeggios to improve finger dexterity and technique.',
+   'Regular practice of scales and arpeggios is fundamental for developing strong piano-playing skills.',
+   'Practice major and minor scales in multiple octaves, focusing on evenness and accuracy of finger movements.',
+   'Yes, by dedicating at least 20 minutes each day to practicing scales and arpeggios.',
+   'Yes, mastering scales and arpeggios enhances overall piano technique and fluency.',
+   'Yes, consistent practice is key to improving piano skills and mastering scales and arpeggios.'),
+  (2, 8, 2, 'Learn a New Piano Piece', 
+   'Select a new piano piece to learn and master, focusing on understanding the musical notation and interpretation.',
+   'Learning new piano pieces allows for exploration of different musical styles and techniques.',
+   'Study the sheet music, break down challenging passages, and practice hands separately before playing together.',
+   'Yes, by setting a goal to learn a specific section or page of the piece each practice session.',
+   'Yes, successfully learning and performing a new piano piece demonstrates progress and accomplishment.',
+   'Yes, aim to learn the new piano piece within the next two weeks.'),
+  (2, 9, 3, 'Participate in Piano Recital or Performance Class', 
+   'Prepare for and participate in a piano recital or performance class to showcase piano-playing skills and receive feedback.',
+   'Piano recitals provide opportunities to perform in front of an audience and receive constructive criticism.',
+   'Practice selected pieces thoroughly, focusing on dynamics, expression, and stage presence.',
+   'Yes, by dedicating extra practice time leading up to the recital or performance class.',
+   'Yes, participating in piano recitals builds confidence and performance skills.',
+   'Yes, the piano recital or performance class is scheduled for the end of the month.');

@@ -19,17 +19,10 @@ CREATE TABLE category (
     color VARCHAR
 );
 
-CREATE TABLE task (
-    task_id SERIAL PRIMARY KEY,
+CREATE TABLE task ( 
+    task_id SERIAL PRIMARY KEY, 
     user_id INT REFERENCES users(user_id),
-    cat_id INT REFERENCES category(cat_id), 
-    title VARCHAR,
-    description VARCHAR
-);
-
-CREATE TABLE goalform ( 
-    user_id INT REFERENCES users(user_id),
-    task_id INT REFERENCES task(task_id),  
+    cat_id INT REFERENCES category(cat_id),
     title VARCHAR,
     description VARCHAR,
     specific VARCHAR,

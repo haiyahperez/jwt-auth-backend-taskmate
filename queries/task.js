@@ -1,45 +1,33 @@
 const db = require("../db/dbConfig.js");
 
-const getTasks = async () => {
+const getTasksByUser = async (user_id) => {
     try {
-        const userTasks = await db.any(
-            "SELECT * FROM task"
+        const tasksbyUser = await db.any(
+            "SELECT * FROM task WHERE user_id = $1", user_id
             );
-        return userTasks;
+        return tasksbyUser;
     } catch (error) {
         console.error("Error fetching user tasks:", error);
         throw error;
     }
 };
 
-const getTaskByUser = async (user_id) => {
+const getTaskById = async (task_id) => {
     try {
-        const userTasks = await db.any(
-            "SELECT * ALL FROM task WHERE user_id = $1", user_id
+        const taskById = await db.any(
+            "SELECT * FROM task WHERE task_id = $1", task_id
         )
-        return userTasks;
+        return taskById;
     } catch (error) {
         console.error("Error fetching user tasks: ", error);
         throw error;
     }
 };
 
-const getTaskGoals = async () => {
-    try {
-        const taskGoals = await db.any(
-            "SELECT task.task_id, task.title AS task_title, task.description AS task_description, goal.goal_id, goal.title AS goal_title, goal.description AS goal_description FROM task JOIN goal ON task.goal_id = goal.goal_id"
-        );
-        return taskGoals;
-    } catch (error) {
-        console.error("Error fetching task goals:", error);
-        throw error;
-    }
-};
-
-const getTaskByCategoryColor = async () => {
+const getTaskByCategoryColor = async (cat_id) => {
     try {
         const taskByCategoryColor = await db.any(
-            "SELECT task.*, category.color FROM task JOIN category ON task.cat_id = category.cat_id"
+            "SELECT task.* , category.color FROM task JOIN category ON task.cat_id = category.cat_id WHERE category.cat_id = $1", cat_id
         );
         return taskByCategoryColor;
     } catch (error) {
@@ -48,11 +36,11 @@ const getTaskByCategoryColor = async () => {
     }
 };
 
-const updateTask = async (task_id, title, description) => {
+const updateTask = async ({ task_id, cat_id, title, description, specific, measure, attain, relevant, timely }) => {
     try {
         const updatedTask = await db.one(
-            "UPDATE task SET title = $1, description = $2 WHERE task_id = $3 RETURNING *",
-            [title, description, task_id]
+            "UPDATE task SET cat_id = $2, title = $3, description = $4, specific = $5, measure = $6, attain = $7, relevant = $8, timely = $9 WHERE task_id = $1 RETURNING *",
+            [task_id, cat_id, title, description, specific, measure, attain, relevant, timely]
         );
         return updatedTask;
     } catch (error) {
@@ -61,11 +49,11 @@ const updateTask = async (task_id, title, description) => {
     }
 };
 
-const createTask = async (user_id, title, goal_id, description) => {
+const createTask = async (task_id, user_id, cat_id, title, description, specific, measure, attain, relevant, timely) => {
     try {
         const newTask = await db.one(
-            "INSERT INTO task (user_id, title, goal_id, description) VALUES ($1, $2, $3, $4) RETURNING *",
-            [user_id, title, goal_id, description]
+            "INSERT INTO task (task_id, user_id, cat_id,title, description, specific, measure, attain, relevant, timely) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+            task_id, user_id, cat_id, title, description, specific, measure, attain, relevant, timely
         );
         return newTask;
     } catch (error) {
@@ -88,8 +76,8 @@ const deleteTask = async (task_id) => {
 };
 
 module.exports = {
-    getTasks,
-    getTaskGoals,
+    getTasksByUser,
+    getTaskById,
     getTaskByCategoryColor,
     updateTask, 
     createTask,

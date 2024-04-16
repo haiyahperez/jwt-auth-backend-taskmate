@@ -1,8 +1,8 @@
 const express = require("express");
 const task = express.Router();
 const {
-    getTasks,
-    getTaskByUser,
+    getTasksByUser,
+    getTaskById,
     getTaskByCategoryColor,
     updateTask,
     createTask,
@@ -11,24 +11,41 @@ const {
 
 // GET to retrieve user tasks
 task.get("/", async (req, res) => {
-    const allTasks = await getTasks();
-       if (allTasks[0]) res.status(200).json(allTasks)
-       else res.status(500).json({ error: "Internal server error" })
+    const { user_id } = req.query;
+    if (user_id) {
+        const getAllTasksByUser = await getTasksByUser(user_id);
+        if (getAllTasksByUser[0]) res.status(200).json(getAllTasksByUser)
+        else res.status(500).json({ error: "Internal server error" })}
 });
 
-// GET tasks by user_id 
-task.get("/:user", async (req, res) => {
-    const { user_id } = req.query;
-    const getAllTasksByUser = await getTaskByUser(user_id);
-    if (getAllTasksByUser[0]) res.status(200).json(getAllTasksByUser)
-    else res.status(500).json({ error: "Internal server error" })
+// GET tasks by task_id
+task.get("/:task_id", async (req, res) => {
+    const { task_id } = req.params;
+    try { 
+        const taskById = await getTaskById(task_id); 
+        res.status(200).json(taskById);
+    } catch (error) {
+        console.error("Error finding requests", error)
+        res.status(500).json({ error: "Internal server error"})
+    }
+});
+
+task.get("/category/:cat_id", async (req, res) => {
+    const { cat_id } = req.params;
+    try {
+        const taskByCat = await getTaskByCategoryColor(cat_id);
+        res.status(201).json(taskByCat);    
+    } catch (error) {
+        console.error("Error fetching requests:", error);
+        res.status(500).json({ error: "Internal Server Error"});
+    }
 });
 
 // POST to create a new task
-task.post("/task", async (req, res) => {
-    const { title, goal_id, description } = req.body;
+task.post("/", async (req, res) => {
+    const { title, task_id, description } = req.body;
     try {
-        const newTask = await createTask(title, goal_id, description);
+        const newTask = await createTask(title, task_id, description);
         res.status(201).json(newTask);
     } catch (error) {
         console.error("Error creating task:", error);
@@ -37,11 +54,10 @@ task.post("/task", async (req, res) => {
 });
 
 // PUT to update an existing task
-task.put("/task/:task_id", async (req, res) => {
-    const { task_id } = req.params;
-    const { title, goal_id, description } = req.body;
+task.put("/", async (req, res) => {
+    
     try {
-        const updatedTask = await updateTask(task_id, title, goal_id, description);
+        const updatedTask = await updateTask(req.body);
         res.status(200).json(updatedTask);
     } catch (error) {
         console.error("Error updating task:", error);
@@ -50,7 +66,7 @@ task.put("/task/:task_id", async (req, res) => {
 });
 
 // DELETE to delete a task
-task.delete("/task/:task_id", async (req, res) => {
+task.delete("/", async (req, res) => {
     const { task_id } = req.params;
     try {
         await deleteTask(task_id);

@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 const authController = require("./controllers/authController");
 const categoryController = require("./controllers/categoryController");
 const taskController = require("./controllers/taskController");
-const goalController = require("./controllers/goalController");
+
 
 // CONFIGURATION
 const app = express();
@@ -33,7 +33,6 @@ app.use(cookieParser());
 app.use("/api/auth", authController);
 app.use("/category", categoryController);
 app.use("/task", taskController);
-app.use("/goal", goalController);
 
 
 // ROUTES
