@@ -9,7 +9,7 @@ const findUserByUsername = async (username) => {
     const query = "SELECT * FROM users WHERE username = $1";
 
     const user = await db.oneOrNone(query, username);
-
+    console.log(user)
     return user;
   } catch (error) {
     console.error("Error finding user by username:", error);
@@ -17,11 +17,12 @@ const findUserByUsername = async (username) => {
   }
 };
 
+
 const createUser = async ({ username, passwordHash, email }) => {
   const query = `
       INSERT INTO users (username, password_hash, email)
       VALUES ($1, $2,$3)
-      RETURNING id, username, email; 
+      RETURNING user_id, username, email; 
     `;
   const newUser = await db.one(query, [username, passwordHash, email]);
   return newUser;

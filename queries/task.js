@@ -13,6 +13,7 @@ const getTasksByUser = async (user_id) => {
 };
 
 const getTaskById = async (task_id) => {
+    console.log(task_id)
     try {
         const taskById = await db.any(
             "SELECT * FROM task WHERE task_id = $1", task_id
@@ -49,11 +50,11 @@ const updateTask = async ({ task_id, cat_id, title, description, specific, measu
     }
 };
 
-const createTask = async (task_id, user_id, cat_id, title, description, specific, measure, attain, relevant, timely) => {
+const createTask = async ({user_id, cat_id, title, description, specific, measure, attain, relevant, timely}) => {
     try {
         const newTask = await db.one(
-            "INSERT INTO task (task_id, user_id, cat_id,title, description, specific, measure, attain, relevant, timely) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
-            task_id, user_id, cat_id, title, description, specific, measure, attain, relevant, timely
+            "INSERT INTO task (user_id, cat_id, title, description, specific, measure, attain, relevant, timely) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
+         [user_id, cat_id, title, description, specific, measure, attain, relevant, timely]
         );
         return newTask;
     } catch (error) {

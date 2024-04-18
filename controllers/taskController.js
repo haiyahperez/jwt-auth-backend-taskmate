@@ -10,17 +10,19 @@ const {
 } = require("../queries/task");
 
 // GET to retrieve user tasks
-task.get("/", async (req, res) => {
-    const { user_id } = req.query;
+task.get("/:user_id", async (req, res) => {
+    const { user_id } = req.params;
     if (user_id) {
         const getAllTasksByUser = await getTasksByUser(user_id);
         if (getAllTasksByUser[0]) res.status(200).json(getAllTasksByUser)
-        else res.status(500).json({ error: "Internal server error" })}
+        else res.status(500).json({ error: "Internal server error" })} else {
+        res.status(500).json({error: "Internal server error", error })}
 });
 
 // GET tasks by task_id
-task.get("/:task_id", async (req, res) => {
+task.get("/form/:task_id", async (req, res) => {
     const { task_id } = req.params;
+    console.log(task_id)
     try { 
         const taskById = await getTaskById(task_id); 
         res.status(200).json(taskById);
@@ -43,9 +45,9 @@ task.get("/category/:cat_id", async (req, res) => {
 
 // POST to create a new task
 task.post("/", async (req, res) => {
-    const { title, task_id, description } = req.body;
+    
     try {
-        const newTask = await createTask(title, task_id, description);
+        const newTask = await createTask(req.body);
         res.status(201).json(newTask);
     } catch (error) {
         console.error("Error creating task:", error);
@@ -66,7 +68,7 @@ task.put("/", async (req, res) => {
 });
 
 // DELETE to delete a task
-task.delete("/", async (req, res) => {
+task.delete("/task/form/:task_id", async (req, res) => {
     const { task_id } = req.params;
     try {
         await deleteTask(task_id);

@@ -11,7 +11,7 @@ auth.post("/login", async (req, res) => {
 
   try {
     const user = await findUserByUsername(username);
-
+    console.log("authCont", user)
     if (!user) return res.status(401).json({ message: "Invalid credentials" });
 
     const validPassword = await bcrypt.compare(password, user.password_hash);
@@ -20,7 +20,8 @@ auth.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
 
     const token = generateToken(user);
-
+    // const updatedUser = { ...user, userId:user[user_id]};
+    console.log(user)
     res.status(200).json({
       message: "Logged in successfully",
       user,
@@ -99,7 +100,7 @@ auth.get("/user", authenticateToken, async (req, res) => {
       // Return the user information, excluding sensitive data like password
       res.status(200).json({
         user: {
-          id: user.id,
+          id: user.user_id,
           username: user.username,
           email: user.email,
         },
