@@ -23,8 +23,8 @@ const app = express();
 // MIDDLEWARE change origin to your frontend netlify address for deployment
 app.use(
   cors({
-    origin: "http://localhost:4003",
-    // origin: "https://main--jwt-auth-10-3.netlify.app/",
+    // origin: "http://localhost:4003",
+    origin: "https://taskmates.netlify.app",
   })
 );
 app.use(express.json());
